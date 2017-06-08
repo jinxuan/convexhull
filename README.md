@@ -12,6 +12,8 @@ the points).
 
 ## How to Run
 
+1. clone this repo
+2. Run the test cases
 ## Input Format
 
 First line of input will contain a integer, N, number of points. Point can be 2 dimension or 3 dimension.
