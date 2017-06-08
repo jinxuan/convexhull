@@ -13,7 +13,8 @@ the points).
 ## How to Run
 
 1. clone this repo
-2. Run the test cases
+2. Run the test cases use ` python -m unittest discover -v`
+3. To run python script taking input from stdin use `cat test.txt | convexhull/convexhull2d.py`
 ## Input Format
 
 First line of input will contain a integer, N, number of points. Point can be 2 dimension or 3 dimension.

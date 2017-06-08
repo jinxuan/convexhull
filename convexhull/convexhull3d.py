@@ -16,32 +16,62 @@ class ConvexHull3D(object):
         self.convexhull = []
 
     def vect(self, points, start, end):
+        """
+        Construct an vector
+        :param points: input point list
+        :param start: start point's index in point list
+        :param end: end point's index in point list
+        :return: vector from start to end
+        """
         return [y - x for x, y in zip(points[start], points[end])]
 
     def cross(self, u, v):
+        """
+        Calculate cross product between two vectors
+        :return: cross product result
+        """
         return [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]
 
     def dot(self, u, v):
+        """
+        Calculate dot product between two vectors
+        :return: dot product result 
+        """
         return sum([x * y for x, y in zip(u, v)])
 
     def normal(self, points, face):
+        """
+        Return normal vector from face
+        :param points: 
+        :param face: 
+        :return: 
+        """
         u = self.vect(points, face[0], face[1])
         v = self.vect(points, face[0], face[-1])
         return self.cross(u, v)
 
     def seen(self, points, face, p):
+        """
+        Return if point s is able to see this face or plane
+        """
         N = self.normal(points, face)
         P = self.vect(points, face[0], p)
         return (self.dot(N, P) >= 0)
 
     def bdry(self, faces):
+        """
+        Filter face that is inside convexhull 
+        :param faces: 
+        :return: 
+        """
         bdry_fw = set([(F[i - 1], F[i]) for F in faces for i in range(0, len(F))])
         bdry_bk = set([(F[i], F[i - 1]) for F in faces for i in range(0, len(F))])
         return bdry_fw - bdry_bk
 
     def addPoint(self, points, hull, p):
         """
-        Add points to current hull, if the point is not in it. Update by  
+        Add points to current hull, if the point is not in it. Update by construct faces from point line between seen face
+        and un seen faces. 
         :param points: The input point list
         :param hull: Current ConvexHull in which we might need to add point and face to it
         :param p: Point that might need to add
@@ -57,12 +87,23 @@ class ConvexHull3D(object):
             hull.append([E[0], E[1], p])
 
     def one_face(self, points, face, p):
+        """
+        Check if point is on face
+        :param points: 
+        :param face: 
+        :param p: 
+        :return: 
+        """
         a, b, c = self.normal(points, face)
         d = -(a * points[face[0]][0] + b * points[face[0]][1] + c * points[face[0]][2])
         p_ = a * points[p][0] + b * points[p][1] + c * points[p][2]
         return p_ == d
 
     def get_convexhull(self):
+        """
+        Generate convexhull from input list.
+        :return: 
+        """
         # make sure points are not on same line or same plane. Otherwise we couldn't find build the initial convex hull
         all_in_one_plane = True
         for i in range(3, len(self.points)):

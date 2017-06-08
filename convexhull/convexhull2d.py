@@ -11,8 +11,12 @@ class ConvexHull2D(object):
     def __init__(self, points=[]):
         self.points = points
         self.convexhull = []
-    # Graham Scan
+
     def get_convexhull(self):
+        """
+        Use Graham Scan Algorithm to return the Convex Hull
+        :return: 
+        """
         num_points = len(self.points)
         if num_points <= 3: return self.points
         # point with lowest y then lowest x, this is begin of the convex hull;
@@ -34,6 +38,11 @@ class ConvexHull2D(object):
         return stack
 
     def check_if_within_convexhull(self, point):
+        """
+        Use Ray Casting algorithm to check if point is in the ConvexHull
+        :param point: 
+        :return: 
+        """
         n = len(self.convexhull)
         inside = False
         x, y = point
